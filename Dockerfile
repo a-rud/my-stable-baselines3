@@ -22,8 +22,8 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
      /opt/conda/bin/conda install -y python=$PYTHON_VERSION numpy pyyaml scipy ipython mkl mkl-include && \
      /opt/conda/bin/conda install -y pytorch $PYTORCH_DEPS -c pytorch && \
      /opt/conda/bin/conda clean -ya
-ENV PATH /opt/conda/bin:$PATH
 
+ENV PATH /opt/conda/bin:$PATH
 ENV CODE_DIR /root/code
 
 # Copy setup file only to install dependencies
@@ -31,7 +31,7 @@ COPY ./setup.py ${CODE_DIR}/stable-baselines3/setup.py
 COPY ./stable_baselines3/version.txt ${CODE_DIR}/stable-baselines3/stable_baselines3/version.txt
 
 RUN \
-    cd ${CODE_DIR}/stable-baselines3 3&& \
+    cd ${CODE_DIR}/stable-baselines3&& \
     pip install -e .[extra,tests,docs] && \
     # Use headless version for docker
     pip uninstall -y opencv-python && \
