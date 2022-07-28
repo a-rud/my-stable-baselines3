@@ -10,7 +10,6 @@ VERSION=$(cat ./stable_baselines3/version.txt) # version of SB3
 if [[ ${USE_GPU} == "True" ]]; then
   PARENT=${GPU_PARENT}
   PYTORCH_DEPS="cudatoolkit=10.1"
-#  LATEST="${LATEST}-gpu"
 else
   PARENT=${CPU_PARENT}
   PYTORCH_DEPS="cpuonly"
@@ -21,7 +20,7 @@ else
 fi
 
 echo "docker build --build-arg PARENT_IMAGE=${PARENT} --build-arg PYTORCH_DEPS=${PYTORCH_DEPS} --tag ${TAG}:${VERSION} ."
-#docker build --build-arg PARENT_IMAGE=${PARENT} --build-arg PYTORCH_DEPS=${PYTORCH_DEPS} --tag ${TAG}:${VERSION} .
+docker build --build-arg PARENT_IMAGE=${PARENT} --build-arg PYTORCH_DEPS=${PYTORCH_DEPS} --tag ${TAG}:${VERSION} .
 echo "docker tag ${TAG}:${VERSION} ${TAG}:${LATEST}"
-#docker tag ${TAG}:${VERSION} ${TAG}:${LATEST}
+docker tag ${TAG}:${VERSION} ${TAG}:${LATEST}
 
