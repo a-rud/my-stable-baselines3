@@ -2,6 +2,7 @@ import collections
 import functools
 import itertools
 import multiprocessing
+from typing import Optional
 
 import gym
 import numpy as np
@@ -25,7 +26,9 @@ class CustomGymEnv(gym.Env):
         self.current_step = 0
         self.ep_length = 4
 
-    def reset(self):
+    def reset(self, seed: Optional[int] = None):
+        if seed is not None:
+            self.seed(seed)
         self.current_step = 0
         self._choose_next_state()
         return self.state
@@ -442,6 +445,23 @@ def test_vec_env_is_wrapped():
 
     vec_env = VecFrameStack(vec_env, n_stack=2)
     assert vec_env.env_is_wrapped(Monitor) == [False, True]
+
+
+@pytest.mark.parametrize("vec_env_class", VEC_ENV_CLASSES)
+def test_backward_compat_seed(vec_env_class):
+    def make_env():
+        env = CustomGymEnv(gym.spaces.Box(low=np.zeros(2), high=np.ones(2)))
+        # Patch reset function to remove seed param
+        env.reset = env.observation_space.sample
+        env.seed = env.observation_space.seed
+        return env
+
+    vec_env = vec_env_class([make_env for _ in range(N_ENVS)])
+    vec_env.seed(3)
+    obs = vec_env.reset()
+    vec_env.seed(3)
+    new_obs = vec_env.reset()
+    assert np.allclose(new_obs, obs)
 
 
 @pytest.mark.parametrize("vec_env_class", VEC_ENV_CLASSES)

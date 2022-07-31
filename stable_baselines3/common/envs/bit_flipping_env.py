@@ -2,13 +2,13 @@ from collections import OrderedDict
 from typing import Any, Dict, Optional, Union
 
 import numpy as np
-from gym import GoalEnv, spaces
+from gym import Env, spaces
 from gym.envs.registration import EnvSpec
 
 from stable_baselines3.common.type_aliases import GymStepReturn
 
 
-class BitFlippingEnv(GoalEnv):
+class BitFlippingEnv(Env):
     """
     Simple bit flipping env, useful to test HER.
     The goal is to flip all the bits to get a vector of ones.
@@ -157,12 +157,20 @@ class BitFlippingEnv(GoalEnv):
             ]
         )
 
-    def reset(self) -> Dict[str, Union[int, np.ndarray]]:
+    def reset(self, seed: Optional[int] = None) -> Dict[str, Union[int, np.ndarray]]:
+        if seed is not None:
+            self.obs_space.seed(seed)
         self.current_step = 0
         self.state = self.obs_space.sample()
         return self._get_obs()
 
     def step(self, action: Union[np.ndarray, int]) -> GymStepReturn:
+        """
+        Step into the env.
+
+        :param action:
+        :return:
+        """
         if self.continuous:
             self.state[action > 0] = 1 - self.state[action > 0]
         else:

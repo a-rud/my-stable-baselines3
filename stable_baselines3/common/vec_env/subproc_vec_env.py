@@ -14,11 +14,14 @@ from stable_baselines3.common.vec_env.base_vec_env import (
 )
 
 
-def _worker(
-    remote: mp.connection.Connection, parent_remote: mp.connection.Connection, env_fn_wrapper: CloudpickleWrapper
+def _worker(  # noqa: C901
+    remote: mp.connection.Connection,
+    parent_remote: mp.connection.Connection,
+    env_fn_wrapper: CloudpickleWrapper,
 ) -> None:
     # Import here to avoid a circular import
     from stable_baselines3.common.env_util import is_wrapped
+    from stable_baselines3.common.utils import compat_gym_seed
 
     parent_remote.close()
     env = env_fn_wrapper.var()
@@ -33,7 +36,7 @@ def _worker(
                     observation = env.reset()
                 remote.send((observation, reward, done, info))
             elif cmd == "seed":
-                remote.send(env.seed(data))
+                remote.send(compat_gym_seed(env, seed=data))
             elif cmd == "reset":
                 observation = env.reset()
                 remote.send(observation)

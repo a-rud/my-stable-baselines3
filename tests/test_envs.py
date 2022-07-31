@@ -28,7 +28,7 @@ ENV_CLASSES = [
 ]
 
 
-@pytest.mark.parametrize("env_id", ["CartPole-v0", "Pendulum-v1"])
+@pytest.mark.parametrize("env_id", ["CartPole-v1", "Pendulum-v1"])
 def test_env(env_id):
     """
     Check that environmnent integrated in Gym pass the test.
@@ -74,6 +74,17 @@ def test_bit_flipping(kwargs):
 
     # No warnings for custom envs
     assert len(record) == 0
+
+    # Remove a key, must throw an error
+    obs_space = env.observation_space.spaces["observation"]
+    del env.observation_space.spaces["observation"]
+    with pytest.raises(AssertionError):
+        check_env(env)
+
+    # Rename a key, must throw an error
+    env.observation_space.spaces["obs"] = obs_space
+    with pytest.raises(AssertionError):
+        check_env(env)
 
 
 def test_high_dimension_action_space():
@@ -155,13 +166,19 @@ def test_non_default_action_spaces(new_action_space):
 
     # No warnings for custom envs
     assert len(record) == 0
+
     # Change the action space
     env.action_space = new_action_space
 
+    low, high = new_action_space.low[0], new_action_space.high[0]
     # Unbounded action space throws an error,
     # the rest only warning
     if not np.all(np.isfinite(env.action_space.low)):
         with pytest.raises(AssertionError), pytest.warns(UserWarning):
+            check_env(env)
+    # numpy >= 1.21 raises a ValueError
+    elif int(np.__version__.split(".")[1]) >= 21 and (low > high):
+        with pytest.raises(ValueError), pytest.warns(UserWarning):
             check_env(env)
     else:
         with pytest.warns(UserWarning):
