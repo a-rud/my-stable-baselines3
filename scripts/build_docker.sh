@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#GPU_PARENT=nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04
-#CPU_PARENT=ubuntu:18.04
-
 CPU_PARENT=ubuntu:20.04
 GPU_PARENT=nvidia/cuda:11.3.1-base-ubuntu20.04
 

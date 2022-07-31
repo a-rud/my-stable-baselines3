@@ -40,6 +40,7 @@ Release 1.6.0 (2022-07-11)
 
 Breaking Changes:
 ^^^^^^^^^^^^^^^^^
+- Switched minimum Gym version to 0.24 (@carlosluis)
 - Changed the way policy "aliases" are handled ("MlpPolicy", "CnnPolicy", ...), removing the former
   ``register_policy`` helper, ``policy_base`` parameter and using ``policy_aliases`` static attributes instead (@Gregwar)
 - SB3 now requires PyTorch >= 1.11
@@ -48,6 +49,7 @@ Breaking Changes:
 
 New Features:
 ^^^^^^^^^^^^^
+- ``noop_max`` and ``frame_skip`` are now allowed to be equal to zero when using ``AtariWrapper``
 
 SB3-Contrib
 ^^^^^^^^^^^
@@ -73,6 +75,7 @@ Deprecations:
 Others:
 ^^^^^^^
 - Upgraded to Python 3.7+ syntax using ``pyupgrade``
+- Updated docker base image to Ubuntu 20.04 and cuda 11.3
 - Removed redundant double-check for nested observations from ``BaseAlgorithm._wrap_env`` (@TibiGG)
 
 Documentation:
@@ -82,6 +85,7 @@ Documentation:
 - Added link to PPO ICLR blog post
 - Added remark about breaking Markov assumption and timeout handling
 - Added doc about MLFlow integration via custom logger (@git-thor)
+- Updated tutorials to work with Gym 0.23 (@arjun-kg)
 - Updated Huggingface integration doc
 - Added copy button for code snippets
 - Added doc about EnvPool and Isaac Gym support
@@ -94,7 +98,7 @@ Release 1.5.0 (2022-03-25)
 
 Breaking Changes:
 ^^^^^^^^^^^^^^^^^
-- Switched minimum Gym version to 0.21.0.
+- Switched minimum Gym version to 0.21.0
 
 New Features:
 ^^^^^^^^^^^^^
@@ -1015,4 +1019,4 @@ And all the contributors:
 @eleurent @ac-93 @cove9988 @theDebugger811 @hsuehch @Demetrio92 @thomasgubler @IperGiove @ScheiklP
 @simoninithomas @armandpl @manuel-delverme @Gautam-J @gianlucadecola @buoyancy99 @caburu @xy9485
 @Gregwar @ycheng517 @quantitative-technologies @bcollazo @git-thor @TibiGG @cool-RR @MWeltevrede
-@Melanol @qgallouedec @francescoluciano
+@Melanol @qgallouedec @francescoluciano @carlosluis @arjun-kg

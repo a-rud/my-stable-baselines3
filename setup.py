@@ -73,7 +73,7 @@ setup(
     packages=[package for package in find_packages() if package.startswith("stable_baselines3")],
     package_data={"stable_baselines3": ["py.typed", "version.txt"]},
     install_requires=[
-        "gym==0.21",  # Fixed version due to breaking changes in 0.22
+        "gym==0.25",
         "numpy",
         "torch>=1.11",
         # For saving models
@@ -100,11 +100,9 @@ setup(
             "isort>=5.0",
             # Reformat
             "black",
-            # For toy text Gym envs
-            "scipy>=1.4.1",
         ],
         "docs": [
-            "sphinx",
+            "sphinx~=4.5.0",
             "sphinx-autobuild",
             "sphinx-rtd-theme",
             # For spelling
@@ -117,8 +115,9 @@ setup(
         "extra": [
             # For render
             "opencv-python",
+            "pygame",
             # For atari games,
-            "ale-py==0.7.4",
+            "ale-py~=0.7.5",
             "autorom[accept-rom-license]~=0.4.2",
             "pillow",
             # Tensorboard support

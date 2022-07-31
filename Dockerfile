@@ -34,7 +34,7 @@ COPY ./setup.py ${CODE_DIR}/stable-baselines3/setup.py
 COPY ./stable_baselines3/version.txt ${CODE_DIR}/stable-baselines3/stable_baselines3/version.txt
 
 RUN \
-    cd ${CODE_DIR}/stable-baselines3&& \
+    cd ${CODE_DIR}/stable-baselines3 3&& \
     pip install -e .[extra,tests,docs] && \
     # Use headless version for docker
     pip uninstall -y opencv-python && \
