@@ -17,7 +17,6 @@ if [[ ${USE_GPU} == "True" ]]; then
 else
   PARENT=${CPU_PARENT}
   PYTORCH_DEPS="cpuonly"
-  #TAG="${TAG}-cpu" # tag must always be the same since using only one repo
   # Mark the images as CPU via versions
   VERSION="${VERSION}-cpu"
   LATEST="${LATEST}-cpu"
