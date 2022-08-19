@@ -4,7 +4,8 @@
 #CPU_PARENT=ubuntu:18.04
 
 CPU_PARENT=ubuntu:20.04
-GPU_PARENT=nvidia/cuda:11.3.1-base-ubuntu20.04
+#GPU_PARENT=nvidia/cuda:11.3.1-base-ubuntu20.04
+GPU_PARENT=nvidia/cuda:11.4.0-cudnn8-devel-ubuntu20.04
 
 TAG=arudl/my-stable-baselines3
 LATEST=latest
