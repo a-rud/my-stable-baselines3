@@ -125,6 +125,8 @@ class DiagGaussianDistribution(Distribution):
         self.action_dim = action_dim
         self.mean_actions = None
         self.log_std = None
+        # Adrian:
+        self.active_dimensions_tensor: Optional[th.Tensor] = None
 
     def proba_distribution_net(self, latent_dim: int, log_std_init: float = 0.0) -> Tuple[nn.Module, nn.Parameter]:
         """
@@ -162,6 +164,10 @@ class DiagGaussianDistribution(Distribution):
         :return:
         """
         log_prob = self.distribution.log_prob(actions)
+        if self.active_dimensions_tensor is not None:
+            # filtered_log_prob = log_prob.copy()
+            filtered_log_prob = log_prob.masked_fill(self.active_dimensions_tensor, value=0.0)
+            return sum_independent_dims(filtered_log_prob)
         return sum_independent_dims(log_prob)
 
     def entropy(self) -> th.Tensor:
