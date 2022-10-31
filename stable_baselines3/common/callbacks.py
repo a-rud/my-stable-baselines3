@@ -244,6 +244,18 @@ class CheckpointCallback(BaseCallback):
             self.model.save(path)
             if self.verbose > 1:
                 print(f"Saving model checkpoint to {path}")
+            # Save vecnormalize data as well:
+            if self.model.get_vec_normalize_env() is not None:
+                # get parammeter folder path:
+                try:
+                    param_folder = self.training_env.unwrapped.envs[0].unwrapped.spec.id
+                    path = os.path.join(self.save_path, param_folder, f"vecnormalize_{self.num_timesteps}_steps.pkl")
+                except:
+                    path = os.path.join(self.save_path, f"vecnormalize_{self.num_timesteps}_steps.pkl")
+                # save model
+                self.model.get_vec_normalize_env().save(path)
+                if self.verbose > 1:
+                    print(f"Saving VecNormalize to {path}")
         return True
 
 
